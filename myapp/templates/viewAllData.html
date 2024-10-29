@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data Page</title>
+</head>
+<body>
+    <h1>Here are the current data!</h1>
+    <ul>
+        {% for entry in data %}
+        <li>{{ entry.name }} - {{ entry.email }} - {{ entry.sex }} - {{ entry.age }}</li>
+        {% endfor %}
+    </ul>
+    <button onclick="window.location.href='/home'">Back to Home</button>
+</body>
+</html>
