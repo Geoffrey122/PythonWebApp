@@ -4,14 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Data Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <h1>Here are the current data!</h1>
-    <ul>
-        {% for entry in data %}
-        <li>{{ entry.name }} - {{ entry.email }} - {{ entry.sex }} - {{ entry.age }}</li>
-        {% endfor %}
-    </ul>
-    <button onclick="window.location.href='/home'">Back to Home</button>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center">Users Data</h1>
+        <div class="table-responsive mt-4">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in data %}
+                    <tr>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.username }}</td>
+                        <td>{{ entry.email }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/home" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
 </body>
 </html>
