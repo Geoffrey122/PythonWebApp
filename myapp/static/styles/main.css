@@ -1,3 +1,4 @@
+/* Custom styles for the ADMIN navbar */
 body {
     background-color: #f8f9fa;
 }
@@ -29,4 +30,20 @@ body {
 
 .btn {
     margin: 5px;
+}
+
+/* Custom styles for the USER navbar */
+.navbar-user {
+    background-color: #a10010; /* Bootstrap 'danger' red */
+}
+.navbar-user .navbar-brand,
+.navbar-user .nav-link {
+    color: #fff !important;
+}
+.navbar-user .nav-link:hover {
+    color: #ffc107 !important;
+}
+.active-page {
+    font-weight: bold;
+    text-decoration: underline;
 }

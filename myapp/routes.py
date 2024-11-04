@@ -73,7 +73,7 @@
 #     return jsonify({"user": current_user, "data": sample_data}), 200
 
 import csv
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify, make_response
+from flask import Blueprint, request, render_template, redirect, url_for, jsonify, make_response, flash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 import os
 
@@ -84,6 +84,14 @@ CSV_FILE_PATH = 'datadb.csv'
 ADMIN_CREDENTIALS_PATH = 'admins.csv'
 
 # Helper functions to read/write data to CSV
+def read_user(username):
+    with open(CSV_FILE_PATH, mode='r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row['username'] == username:
+                return row
+    return None
+
 def read_data_from_csv():
     data = []
     try:
@@ -102,14 +110,52 @@ def write_data_to_csv(data):
         writer.writeheader()
         writer.writerows(data)
 
+# Helper function to update user data in CSV
+def update_user(username, name, email):
+    users = []
+    with open(CSV_FILE_PATH, mode='r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row['username'] == username:
+                row['name'] = name
+                row['email'] = email
+            users.append(row)
+    # Write updated data back to CSV
+    with open(CSV_FILE_PATH, mode='w', newline='') as file:
+        fieldnames = ['username', 'name', 'email']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(users)
+
 def check_user_credentials(username, password):
-    # Replace this with your actual user credential checking logic
     with open(CSV_FILE_PATH, mode='r') as file:
         reader = csv.DictReader(file)
         for row in reader:
             if row['username'] == username and row['password'] == password:
                 return True
     return False
+
+def update_user_profile(username, name, email):
+    users = []
+    updated = False
+    
+    # Read existing users from the CSV file
+    with open(CSV_FILE_PATH, mode='r', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['username'] == username:
+                row['name'] = name
+                row['email'] = email
+                updated = True  # Mark that an update has occurred
+            users.append(row) # Append other details
+
+    # Write back to the CSV file if an update was made
+    if updated:
+        with open(CSV_FILE_PATH, mode='w', newline='') as csvfile:
+            fieldnames = ['id', 'name', 'username', 'password', 'email']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(users)  # Write all users back to the CSV
 
 # Helper functions for admin credentials
 def check_admin_credentials(username, password):
@@ -179,6 +225,25 @@ def user_index():
     current_user = get_jwt_identity()
     return render_template('user_index.html', username=current_user)
 
+@main.route('/edit_profile', methods=['GET'])
+@jwt_required()
+def edit_profile():
+    current_user = get_jwt_identity()
+    user = read_user(current_user)
+    return render_template('user_editProfile.html', user=user)
+
+@main.route('/update_profile', methods=['POST'])
+@jwt_required()
+def update_profile():
+    current_user = get_jwt_identity()
+    name = request.form.get('name')
+    email = request.form.get('email')
+
+    print(f"Updating profile for user: {current_user} with name: {name} and email: {email}")
+    update_user_profile(current_user, name, email)
+
+    return render_template('user_editProfile.html', user={'name': name, 'email': email}, success="Profile updated successfully.")
+
 @main.route('/create_admin', methods=['GET', 'POST'])
 def create_admin():
     if request.method == 'POST':
@@ -239,5 +304,5 @@ def get_data():
 @main.route('/logout')
 def logout():
     response = make_response(redirect(url_for('main.login')))
-    unset_jwt_cookies(response)  # Clear JWT cookies if using Flask-JWT-Extended
+    unset_jwt_cookies(response)
     return response

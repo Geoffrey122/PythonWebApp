@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-user">
+    <a class="navbar-brand" href="{{ url_for('main.user_index') }}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#userNavbarNavDropdown" aria-controls="userNavbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarUserDropdown">
+        <ul class="navbar-nav ml-auto">
+            <!-- Link to Edit Profile Page -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.path == url_for('main.edit_profile') %}active-page{% endif %}" href="{{ url_for('main.edit_profile') }}">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </a>
+            </li>
+            <!-- Logout Link -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

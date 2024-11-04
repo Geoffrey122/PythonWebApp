@@ -57,17 +57,17 @@ from flask_jwt_extended import JWTManager
 jwt = JWTManager()
 
 def create_app():
-    # Create a Flask application instance
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'your_secret_key'
     app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
-    app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Read JWT from cookies
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     app.config['WTF_CSRF_ENABLED'] = False
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False  # Avoids "Missing Token" error
 
-    jwt.init_app(app)  # Initialize JWTManager
+    jwt.init_app(app)
 
-    from myapp.routes import main  # Import the blueprint
+    from myapp.routes import main
     app.register_blueprint(main)
 
     return app

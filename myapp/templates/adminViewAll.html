@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Admins Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}"> <!-- Linking to external CSS file -->
 </head>
 <body class="bg-light">
+    <!-- Navbar -->
+    {% include 'admin_navbar.html' %}
     <div class="container mt-5">
         <h2 class="text-center">Admin Accounts</h2>
         <table class="table table-bordered mt-4">
@@ -25,9 +29,10 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div class="text-center mt-4">
-            <a href="/home" class="btn btn-primary">Back to Home</a>
-        </div>
     </div>
+    <!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
