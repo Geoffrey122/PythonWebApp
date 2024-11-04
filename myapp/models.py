@@ -1,4 +1,4 @@
-from myapp import db  # Use relative import
+from myapp import db
 
 class User(db.Model):
     __tablename__ = 'users'
